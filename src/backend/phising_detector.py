@@ -50,11 +50,10 @@ def data_processing(data):
     data['domain_age'] = copydf['domain_age']
     data['regis_length'] = copydf['regis_length']
     
-    return data
+    return data, Scaler
 
 # Data Prediction
-def predict_phishing(mode,url, data):
-    Scaler = StandardScaler()
+def predict_phishing(mode,url, data, Scaler):
     
     # Data Training
     x = data.drop(columns=['type'])
