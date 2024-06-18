@@ -15,7 +15,7 @@ def phising_url_view(data):
   # Prediction logic based on selection
   if st.button("Predict"):
     if url:
-      st.text("### Phishing Prediction Result")
+      st.markdown("***Phishing Prediction Result***")
       data, Scaler = data_processing(data)
       if prediction_type == "All":
         model_number = 0
