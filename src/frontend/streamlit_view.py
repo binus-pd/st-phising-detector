@@ -20,8 +20,8 @@ def phising_url_view(data):
       if prediction_type == "All":
         model_number = 0
         for model_name in ["RF", "GBC", "ABC"]:
-          prediction = predict_phishing(url, model_name, data, Scaler)
-          st.text(f"{model_name}: {display_prediction(prediction[model_number])}\n")
+          prediction = predict_phishing(model_name, url, data, Scaler)
+          st.text(f"{model_name}: {display_prediction(prediction)}\n")
           model_number += 1
       else:
         prediction = predict_phishing(url, prediction_type, data, Scaler)
