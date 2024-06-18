@@ -16,15 +16,15 @@ def phising_url_view(data):
   if st.button("Predict"):
     if url:
       st.markdown("***Phishing Prediction Result***")
-      data, Scaler = data_processing(data)
+      processed_data, Scaler = data_processing(data)
       if prediction_select == "All":
         model_number = 0
         for prediction_name in ["RF", "GBC", "ABC"]:
-          prediction = predict_phishing(prediction_name, url, data, Scaler)
+          prediction = predict_phishing(prediction_name, url, processed_data, Scaler)
           st.text(f"{prediction_name}: {display_prediction(prediction)}\n")
           model_number += 1
       else:
-        prediction = predict_phishing(prediction_select, url, data, Scaler)
+        prediction = predict_phishing(prediction_select, url, processed_data, Scaler)
         st.text(f"{prediction_select}: {display_prediction(prediction)}\n")
         
 def display_prediction(prediction):
