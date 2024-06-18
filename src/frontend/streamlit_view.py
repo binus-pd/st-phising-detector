@@ -10,22 +10,22 @@ def phising_url_view(data):
 
   # Form elements
   url = st.text_input("Enter URL:")
-  prediction_type = st.selectbox("Prediction Model:", ("All", "RF", "GBC", "ABC"))
+  prediction_select = st.selectbox("Prediction Model:", ("All", "RF", "GBC", "ABC"))
 
   # Prediction logic based on selection
   if st.button("Predict"):
     if url:
       st.markdown("***Phishing Prediction Result***")
       data, Scaler = data_processing(data)
-      if prediction_type == "All":
+      if prediction_select == "All":
         model_number = 0
-        for model_name in ["RF", "GBC", "ABC"]:
-          prediction = predict_phishing(model_name, url, data, Scaler)
-          st.text(f"{model_name}: {display_prediction(prediction)}\n")
+        for prediction_name in ["RF", "GBC", "ABC"]:
+          prediction = predict_phishing(prediction_name, url, data, Scaler)
+          st.text(f"{prediction_name}: {display_prediction(prediction)}\n")
           model_number += 1
       else:
-        prediction = predict_phishing(url, prediction_type, data, Scaler)
-        st.text(f"{prediction_type}: {display_prediction(prediction)}\n")
+        prediction = predict_phishing(prediction_select, url, data, Scaler)
+        st.text(f"{prediction_select}: {display_prediction(prediction)}\n")
         
 def display_prediction(prediction):
     if prediction == 0:
