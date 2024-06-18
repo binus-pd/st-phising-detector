@@ -16,11 +16,21 @@ def phising_url_view(data):
   # Prediction logic based on selection
   if st.button("Predict"):
     if url:
-      data = data_processing(data)
+      data, Scaler = data_processing(data)
       if prediction_type == "All":
+        model_number = 0
         for model_name in ["RF", "GBC", "ABC"]:
-          prediction = predict_phishing(url, model_name, data)
-          output.text += f"{model_name}: {prediction}\n"
+          prediction = predict_phishing(url, model_name, data, Scaler)
+          output.text += f"{model_name}: {display_prediction(prediction[model_number])}\n"
+          model_number += 1
       else:
-        prediction = predict_phishing(url, model_name)
-        output.text = prediction
+        prediction = predict_phishing(url, prediction_type, data, Scaler)
+        output.text = f"{prediction_type}: {display_prediction(prediction)}\n"
+        
+def display_prediction(prediction):
+    if prediction == 0:
+        return "Benign!"
+    elif prediction == 1:
+        return "Phishing!"
+    else:
+        return "Incorrect Format!"
