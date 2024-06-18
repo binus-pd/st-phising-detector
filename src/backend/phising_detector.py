@@ -60,14 +60,6 @@ def predict_phishing(mode,url, data, Scaler):
     y = data['type']
     x_train,x_test,y_train,y_test = train_test_split(x,y,random_state=42,test_size=0.3)
     
-    # Data Modelling
-    RF = RandomForestClassifier(n_estimators=100,max_features='log2')
-    RF.fit(x_train,y_train)
-    ABC = AdaBoostClassifier()
-    ABC.fit(x_train,y_train)
-    GBC = GradientBoostingClassifier()
-    GBC.fit(x_train,y_train)
-    
     # Data Prediction
     url_data = {
         'count_http': count_http_url(url),
@@ -97,18 +89,20 @@ def predict_phishing(mode,url, data, Scaler):
     url_df['domain_age'] = (url_df['domain_age'] - mean_dict[('domain_age')]) / std_dict[('domain_age')]
     url_df['regis_length'] = (url_df['regis_length'] - mean_dict[('regis_length')]) / std_dict[('regis_length')]
 
-    RF_pred = RF.predict(url_df)
-    GBC_pred = GBC.predict(url_df)
-    ABC_pred = ABC.predict(url_df)
-    if (mode=='All'):
-      return RF_pred[0],GBC_pred[0],ABC_pred[0]
-    elif (mode=='RF'):
-      return GBC_pred[0]
+    if (mode=='RF'):
+      RF = RandomForestClassifier(n_estimators=100,max_features='log2')
+      RF.fit(x_train,y_train)
+      RF_pred = RF.predict(url_df)
+      return RF_pred[0]
+  
     elif (mode=='GBC'):
-      return ABC_pred[0]
+      GBC = GradientBoostingClassifier()
+      GBC.fit(x_train,y_train)
+      GBC_pred = GBC.predict(url_df)
+      return GBC_pred[0]
+  
     elif (mode=='ABC'):
+      ABC = AdaBoostClassifier()
+      ABC.fit(x_train,y_train)
+      ABC_pred = ABC.predict(url_df)
       return ABC_pred[0]
-    #if (rf_pred==1):
-      #return 'Phishing'
-    #else:
-     # return 'Benign'
